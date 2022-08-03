@@ -17,7 +17,6 @@ import {
   View,
 } from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {Combination} from './Combnation';
 import {Keychain} from './Keychain';
 
 const App: React.FC = () => {
@@ -32,10 +31,6 @@ const App: React.FC = () => {
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <View style={styles.box}>
         <Keychain />
-      </View>
-
-      <View style={styles.box}>
-        <Combination />
       </View>
     </SafeAreaView>
   );
