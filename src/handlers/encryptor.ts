@@ -1,45 +1,56 @@
-import Aes from 'react-native-aes-crypto';
-import {randomBytes} from '../randomBytes';
+import crypto from 'react-native-quick-crypto';
+import {randomBytes} from './randomBytes';
+
+const algorithm = 'aes-256-cbc';
 
 export default class Encryptor {
-  generateSalt = async (byteCount = 64) => {
-    return await randomBytes(byteCount);
+  generateSalt = (byteCount: number) => {
+    return randomBytes(byteCount);
   };
 
-  generateKey = async (password: string, salt: string) => {
-    return await Aes.pbkdf2(password, salt, 5000, 256);
+  generateKey = (password: string, salt: string) => {
+    return crypto.pbkdf2Sync(password, salt, 100000, 32, 'sha512');
   };
 
-  keyFromPassword = async (password: string, salt: string) => {
-    return await this.generateKey(password, salt);
-  };
+  encrypt = (password: string, text: string) => {
+    const salt = this.generateSalt(32).toString('hex');
+    const key = this.generateKey(password, salt);
+    const iv = this.generateSalt(16);
 
-  encrypt = async (password: string, string: string) => {
     try {
-      const salt = await this.generateSalt();
-      const key = await this.keyFromPassword(password, salt);
-      const iv = await this.generateSalt(64);
+      const cipher = crypto.createCipheriv(algorithm, key, iv);
+      let encrypted = cipher.update(text);
+      const array = [encrypted, cipher.final()] as Uint8Array[];
+      encrypted = Buffer.concat(array);
 
-      const cipher = await Aes.encrypt(string, key, iv, 'aes-256-cbc');
-      return JSON.stringify({cipher, iv, salt});
+      return {
+        salt,
+        iv: iv.toString('hex'),
+        cipher: Buffer.from(encrypted).toString('hex'),
+      };
     } catch (e) {
       console.log(e);
       return false;
     }
   };
 
-  decrypt = async (password: string, encryptedObjStr: string) => {
-    try {
-      const encryptedData = JSON.parse(encryptedObjStr);
-      const key = await this.keyFromPassword(password, encryptedData.salt);
+  decrypt = (
+    password: string,
+    encryptedData: {salt: string; iv: string; cipher: string},
+  ) => {
+    const salt = encryptedData.salt;
+    const iv = Buffer.from(encryptedData.iv, 'hex');
+    const cipher = Buffer.from(encryptedData.cipher, 'hex');
 
-      const rowData = await Aes.decrypt(
-        encryptedData.cipher,
-        key,
-        encryptedData.iv,
-        'aes-256-cbc',
-      );
-      return rowData;
+    const key = this.generateKey(password, salt);
+
+    try {
+      const decipher = crypto.createDecipheriv(algorithm, key, iv);
+      let decrypted = decipher.update(cipher);
+      const array = [decrypted, decipher.final()] as Uint8Array[];
+      decrypted = Buffer.concat(array);
+
+      return decrypted.toString();
     } catch (e) {
       console.log(e);
       return false;

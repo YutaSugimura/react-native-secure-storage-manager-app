@@ -1,7 +1,7 @@
 import {useMemo} from 'react';
 import * as Keychain from 'react-native-keychain';
-import {sha256} from 'react-native-sha256';
-import {randomBytes} from '../randomBytes';
+import crypto from 'react-native-quick-crypto';
+import {randomBytes} from './randomBytes';
 import Encryptor from './encryptor';
 
 const service = 'encryption_key_service';
@@ -29,12 +29,13 @@ export const useSecretKey = (isBiometry?: boolean) => {
     if (credentials) {
       password = credentials.password;
     } else {
-      const newPassword = await randomBytes(64);
+      const newPassword = randomBytes(64).toString('hex');
       const result = await Keychain.setGenericPassword(
         service,
         newPassword,
         keychainOptions,
       );
+
       if (!result) {
         return false;
       }
@@ -42,13 +43,21 @@ export const useSecretKey = (isBiometry?: boolean) => {
       password = newPassword;
     }
 
-    const encryptionKey = await sha256(password);
-    const strObj = await encryptor.encrypt(encryptionKey, value);
+    const encryptionKey = crypto
+      .createHash('sha256')
+      .update(password)
+      .digest('hex');
+    const strObj = encryptor.encrypt(encryptionKey, value);
 
     if (strObj) {
-      return await Keychain.setInternetCredentials(dataKey, dataKey, strObj, {
-        service,
-      });
+      return await Keychain.setInternetCredentials(
+        dataKey,
+        dataKey,
+        JSON.stringify(strObj),
+        {
+          service,
+        },
+      );
     }
 
     return false;
@@ -61,7 +70,10 @@ export const useSecretKey = (isBiometry?: boolean) => {
     }
 
     const password = credentials.password;
-    const encryptionKey = await sha256(password);
+    const encryptionKey = crypto
+      .createHash('sha256')
+      .update(password)
+      .digest('hex');
 
     const hasKey = await Keychain.hasInternetCredentials(key);
     if (!hasKey) {
@@ -74,9 +86,9 @@ export const useSecretKey = (isBiometry?: boolean) => {
     });
 
     if (encryptedStrObj) {
-      const rowData = await encryptor.decrypt(
+      const rowData = encryptor.decrypt(
         encryptionKey,
-        encryptedStrObj.password,
+        JSON.parse(encryptedStrObj.password),
       );
 
       return rowData;

@@ -1,8 +1,8 @@
 import {useMemo} from 'react';
 import * as Keychain from 'react-native-keychain';
-import {sha256} from 'react-native-sha256';
+import crypto from 'react-native-quick-crypto';
 import {MMKV} from 'react-native-mmkv';
-import {randomBytes} from '../randomBytes';
+import {randomBytes} from './randomBytes';
 
 const service = 'encryption_key_service';
 const storage_id = 'user-secretkey-storage';
@@ -31,7 +31,7 @@ export const useSecretKey = (
     if (credentials) {
       password = credentials.password;
     } else {
-      const newPassword = await randomBytes(64);
+      const newPassword = randomBytes(64).toString('hex');
       const result = await Keychain.setGenericPassword(
         service,
         newPassword,
@@ -44,7 +44,10 @@ export const useSecretKey = (
       password = newPassword;
     }
 
-    const encryptionKey = await sha256(password);
+    const encryptionKey = crypto
+      .createHash('sha256')
+      .update(password)
+      .digest('hex');
     const storage = new MMKV({
       id: customStorageId ?? storage_id,
       encryptionKey,
@@ -72,7 +75,10 @@ export const useSecretKey = (
     }
 
     const password = credentials.password;
-    const encryptionKey = await sha256(password);
+    const encryptionKey = crypto
+      .createHash('sha256')
+      .update(password)
+      .digest('hex');
     const storage = new MMKV({
       id: customStorageId ?? storage_id,
       encryptionKey,
@@ -93,7 +99,10 @@ export const useSecretKey = (
     }
 
     const password = credentials.password;
-    const encryptionKey = await sha256(password);
+    const encryptionKey = crypto
+      .createHash('sha256')
+      .update(password)
+      .digest('hex');
     const storage = new MMKV({
       id: customStorageId ?? storage_id,
       encryptionKey,
@@ -110,7 +119,10 @@ export const useSecretKey = (
     }
 
     const password = credentials.password;
-    const encryptionKey = await sha256(password);
+    const encryptionKey = crypto
+      .createHash('sha256')
+      .update(password)
+      .digest('hex');
     const storage = new MMKV({
       id: customStorageId ?? storage_id,
       encryptionKey,
