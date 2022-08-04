@@ -6456,15 +6456,15 @@ react-native-gradle-plugin@^0.0.7:
   resolved "https://registry.npmjs.org/react-native-gradle-plugin/-/react-native-gradle-plugin-0.0.7.tgz"
   integrity sha512-+4JpbIx42zGTONhBTIXSyfyHICHC29VTvhkkoUOJAh/XHPEixpuBduYgf6Y4y9wsN1ARlQhBBoptTvXvAFQf5g==
 
-react-native-keychain@^8.1.0:
-  version "8.1.0"
-  resolved "https://registry.npmjs.org/react-native-keychain/-/react-native-keychain-8.1.0.tgz"
-  integrity sha512-MI5YKO8KKmaa2iBGFDiM/cdJ2E6MXaOIRLS1OyxAM9KP5tnpsLp6zowOAaeuc3nBLZ6D/J/EvZSBRggzSGnUGQ==
+react-native-keychain@^8.1.1:
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-keychain/-/react-native-keychain-8.1.1.tgz#3bb5e37946b964a7bcf7df2fe470dd244e01a340"
+  integrity sha512-8fxgeHKwGcL657eAYpdBTkDIxNhbIHI+kyyO0Yac2dgVAN184JoIwQcW2z6snahwDaCObQOu0biLFHnsH+4KSg==
 
-react-native-mmkv@^2.4.2:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/react-native-mmkv/-/react-native-mmkv-2.4.2.tgz#6a0ee009d13dafe12834885a434f1cc5aa04851b"
-  integrity sha512-0JubkaYOub4pFko5ButzFpy7VaPqt3bhHG8jiRBBhNw97KiYMhyO95eZm4JUp3tSP2KSw7WUY+8pwnyBco+ffg==
+react-native-mmkv@^2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/react-native-mmkv/-/react-native-mmkv-2.4.3.tgz#6bb4c2d5e328513da11faab1371d056a189adbd0"
+  integrity sha512-0hYNOTbsjJ5j5cpX+qjwReGIxuYE9MWRsyPQ72fTOvzmEjYXCF4Wr2VQoqx8R6W1/Uinekvln7dGvJ4RExmHhQ==
 
 react-native-quick-base64@^2.0.2, react-native-quick-base64@^2.0.5:
   version "2.0.5"

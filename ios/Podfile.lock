@@ -289,7 +289,7 @@ PODS:
     - glog
   - react-native-get-random-values (1.8.0):
     - React-Core
-  - react-native-mmkv (2.4.2):
+  - react-native-mmkv (2.4.3):
     - MMKV (>= 1.2.13)
     - React-Core
   - react-native-quick-base64 (2.0.5):
@@ -365,7 +365,7 @@ PODS:
     - React-jsi (= 0.69.3)
     - React-logger (= 0.69.3)
     - React-perflogger (= 0.69.3)
-  - RNKeychain (8.1.0):
+  - RNKeychain (8.1.1):
     - React-Core
   - SocketRocket (0.6.0)
   - Yoga (1.14.0)
@@ -567,7 +567,7 @@ SPEC CHECKSUMS:
   React-jsinspector: bb2605f98aada5d81f3494690da3ef3b4ff3b716
   React-logger: 23a50ef4c18bf9adbb51e2c979318e6b3a2e44a1
   react-native-get-random-values: a6ea6a8a65dc93e96e24a11105b1a9c8cfe1d72a
-  react-native-mmkv: e0fbf896d09b76514b63e6febeb144c6472f00e8
+  react-native-mmkv: 1265a348a4711097ba29c8bcefd5971f48220f2b
   react-native-quick-base64: e657e9197e61b60a9dec49807843052b830da254
   react-native-quick-crypto: b4e02e045076ea6bbcb9f3d2d53b427328bbc1cb
   React-perflogger: 39d2ba8cbcac54d1bb1d9a980dab348e96aef467
@@ -582,7 +582,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: dd8099eb46e9cee4692934bc8cbe5e9a4f5e8d31
   React-runtimeexecutor: 607eb048e22a16388c908ee1f6644200e8d1e19b
   ReactCommon: af7636436b382db7cde4583bbd642f0978e6e3ed
-  RNKeychain: c442b8512802a20cab4db3e3a1cf53e4731615bc
+  RNKeychain: ff836453cba46938e0e9e4c22e43d43fa2c90333
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   Yoga: 44c64131616253fa83366295acdbce3d14926041
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a

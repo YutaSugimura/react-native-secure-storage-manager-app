@@ -41,6 +41,13 @@ yarn start
   yarn android
 ```
 
+## Versions
+
+- react-native@0.69.3
+- react-native-keychain@8.1.1
+- react-native-mmkv@2.4.3
+- react-native-quick-crypto@0.4.5
+
 ## issues
 
 - [iOS 15 setInternetCredentials throwing "The user name or passphrase you entered is not correct" error](https://github.com/oblador/react-native-keychain/issues/509)
