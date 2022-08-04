@@ -13,26 +13,50 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
+  Text,
   useColorScheme,
   View,
 } from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {Keychain} from './Keychain';
+import {AuthProvider, useAuthState} from './context/login';
+import {SigninScreen} from './Signin';
+import {SignupScreen} from './Signup';
+import {WalletScreen} from './Wallet';
 
 const App: React.FC = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  return (
+    <AuthProvider>
+      <SafeAreaView
+        style={[styles.container, isDarkMode ? Colors.darker : Colors.lighter]}>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+
+        <Main />
+      </SafeAreaView>
+    </AuthProvider>
+  );
+};
+
+const Main: React.FC = () => {
+  const state = useAuthState();
+
+  if (state.isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (!state.isAccount) {
+    return <SignupScreen />;
+  }
+
+  if (state.isAccount && !state.isLogin) {
+    return <SigninScreen />;
+  }
 
   return (
-    <SafeAreaView style={[backgroundStyle, styles.container]}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <View style={styles.box}>
-        <Keychain />
-      </View>
-    </SafeAreaView>
+    <View style={styles.box}>
+      <WalletScreen />
+    </View>
   );
 };
 
