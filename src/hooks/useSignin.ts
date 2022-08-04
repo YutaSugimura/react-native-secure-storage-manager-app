@@ -1,15 +1,22 @@
 import {useEffect, useState} from 'react';
 import {useAuthDispatch} from '../context/login';
 import {getGenericPassword} from '../storage/keychain';
+import {storage} from '../storage/storage';
 import {sha256} from '../handlers/hash';
 import {logger} from '../handlers/logger';
 
 export const useSignin = () => {
   const [inputValue, setInputValue] = useState<string>();
+  const [enabledBiometry, setEnabledBiometry] = useState<boolean>(false);
 
   const {signin} = useAuthDispatch();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const _enabledBiometry = storage.getBoolean('biometry');
+    if (_enabledBiometry) {
+      setEnabledBiometry(true);
+    }
+  }, []);
 
   const onSubmit = async () => {
     logger('Signin');
@@ -53,5 +60,6 @@ export const useSignin = () => {
     onChangeText: setInputValue,
     onSubmit,
     signinWithBiometry,
+    enabledBiometry,
   };
 };

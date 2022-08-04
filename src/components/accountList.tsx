@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
   },
   buttonLabelOfListItem: {
-    color: '#61DAFB',
+    color: '#2187FF',
     fontSize: 15,
     fontWeight: 'bold',
   },
@@ -169,12 +169,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 120,
     height: 30,
-    borderColor: '#61DAFB',
+    borderColor: '#2187FF',
     borderWidth: 1,
     borderRadius: 12,
   },
   headerButtonLabel: {
-    color: '#61DAFB',
+    color: '#2187FF',
     fontSize: 15,
     fontWeight: 'bold',
   },

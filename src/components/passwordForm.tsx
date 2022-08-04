@@ -14,9 +14,11 @@ export const PasswordForm: React.FC<Props> = ({value, onChangeText}) => {
       value={value}
       onChangeText={onChangeText}
       placeholder="password"
+      placeholderTextColor={isDarkTheme ? '#aaa' : '#ddd'}
       style={[
         styles.inputText,
         isDarkTheme ? styles.inputText_dark : styles.inputText_light,
+        isDarkTheme ? styles.borderColor_dark : styles.borderColor_light,
       ]}
       autoCorrect={false}
       autoCapitalize="none"
@@ -34,8 +36,13 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
     paddingRight: 12,
     borderWidth: 1,
-    borderColor: '#ccc',
     borderRadius: 8,
+  },
+  borderColor_light: {
+    borderColor: '#ccc',
+  },
+  borderColor_dark: {
+    borderColor: '#999',
   },
   inputText_light: {
     backgroundColor: '#fff',

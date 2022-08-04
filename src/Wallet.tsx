@@ -1,5 +1,11 @@
 import React from 'react';
-import {Button, Dimensions, StyleSheet, View} from 'react-native';
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {useWalletState, WalletProvider} from './context/wallet';
 import {useCreateWallet} from './hooks/useCreateWallet';
 import {AccountList} from './components/accountList';
@@ -20,11 +26,11 @@ const Main: React.FC = () => {
 
   if (!isWallet) {
     return (
-      <Button
-        title="create Wallet"
-        disabled={isWallet}
-        onPress={createWallet}
-      />
+      <View style={styles.box}>
+        <TouchableOpacity disabled={isWallet} onPress={createWallet}>
+          <Text style={styles.buttonLabel}>Create Wallet</Text>
+        </TouchableOpacity>
+      </View>
     );
   }
 
@@ -37,5 +43,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: DEVICE_WIDTH,
+  },
+  box: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonLabel: {
+    color: '#2187FF',
+    fontSize: 24,
+    fontWeight: 'bold',
   },
 });
