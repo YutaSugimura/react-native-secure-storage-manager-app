@@ -18,7 +18,7 @@ import {
   View,
 } from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {AuthProvider, useAuthState} from './context/login';
+import {AuthProvider, useAuthState} from './context/auth';
 import {SigninScreen} from './Signin';
 import {SignupScreen} from './Signup';
 import {WalletScreen} from './Wallet';
