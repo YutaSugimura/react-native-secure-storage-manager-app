@@ -1,6 +1,5 @@
 import React, {useCallback} from 'react';
 import {
-  Alert,
   Dimensions,
   FlatList,
   StyleSheet,
@@ -13,7 +12,6 @@ import {useWalletState} from '../context/wallet';
 import {type Account} from '../hooks/useWallet';
 import {useCreateWallet} from '../hooks/useCreateWallet';
 import {useExportPrivateKey} from '../hooks/useExportPrivatekey';
-import {logger} from '../handlers/logger';
 
 export const AccountList: React.FC = () => {
   const isDarkTheme = useColorScheme() === 'dark';
@@ -56,21 +54,11 @@ const AccountListItem: React.FC<AccountListItemProps> = ({
   index,
 }) => {
   const isDarkTheme = useColorScheme() === 'dark';
-  const {exportPrivateKey} = useExportPrivateKey();
+  const {revealPrivatekey} = useExportPrivateKey();
 
   const onPress = useCallback(async () => {
-    const privatekey = await exportPrivateKey(path);
-
-    if (!privatekey) {
-      return;
-    }
-
-    logger(`result privatekey: ${privatekey}`);
-    Alert.alert(
-      'Alert',
-      `privatekey should never be shared with others! \n private key: \n${privatekey}`,
-    );
-  }, [exportPrivateKey, path]);
+    await revealPrivatekey(path);
+  }, [revealPrivatekey, path]);
 
   return (
     <View

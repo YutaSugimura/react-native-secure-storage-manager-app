@@ -1,5 +1,5 @@
 import {ethers} from 'ethers';
-import {useAuthState} from '../context/login';
+import {useAuthState} from '../context/auth';
 import {useWalletDispatch, useWalletState} from '../context/wallet';
 import Encryptor from '../handlers/encryptor';
 import {logger} from '../handlers/logger';

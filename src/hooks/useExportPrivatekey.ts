@@ -1,57 +1,97 @@
 import {useCallback} from 'react';
 import {ethers} from 'ethers';
+import {useModalDispatch, useModalState} from '../context/modal';
 import {getGenericPassword, getSecretValue} from '../storage/keychain';
+import {storage} from '../storage/storage';
 import Encryptor from '../handlers/encryptor';
+import {sha256} from '../handlers/hash';
 import {logger} from '../handlers/logger';
+import {Alert} from 'react-native';
 
 const encryptor = new Encryptor();
 
 export const useExportPrivateKey = () => {
-  const exportPrivateKey = useCallback(async (path: string) => {
-    logger('** START EXPORT PRIVATE_KEY **');
+  const {modalVisible} = useModalState();
+  const {openModal, closeModal} = useModalDispatch();
 
-    const credentials = await getGenericPassword();
+  const revealPrivatekey = useCallback(
+    async (path: string, password?: string) => {
+      logger('** START EXPORT PRIVATE_KEY **');
 
-    if (!credentials) {
-      logger('credentials does not exists');
-      return false;
-    }
+      if (modalVisible) {
+        logger('Close Password Modal');
+        closeModal();
+      }
 
-    const encryptionKey = credentials.password;
-    logger(`encryptionKey: ${encryptionKey}`);
+      const credentials = await getGenericPassword();
 
-    const encryptedMnemonicDataStrObj = await getSecretValue('mnemonic');
+      if (!credentials) {
+        logger('credentials does not exists');
+        return false;
+      }
 
-    if (!encryptedMnemonicDataStrObj) {
-      logger('mnemonic does not exsits');
-      return false;
-    }
+      const enabledBiometry = storage.getBoolean('biometry');
+      logger(`biometry: ${enabledBiometry}`);
 
-    const {salt, iv, cipher} = JSON.parse(
-      encryptedMnemonicDataStrObj.password,
-    ) as {
-      salt: string;
-      iv: string;
-      cipher: string;
-    };
-    logger(`keychain mnemonic data: ${encryptedMnemonicDataStrObj.password}`);
+      const encryptionKey = credentials.password;
 
-    const mnemonic = encryptor.decrypt(encryptionKey, {salt, iv, cipher});
+      if (!enabledBiometry && !password) {
+        logger('ERROR password does not exists');
+        openModal(path);
+        logger('Open Password Modal');
 
-    if (!mnemonic) {
-      logger('decrypt failed');
-      return false;
-    }
+        return false;
+      } else if (!enabledBiometry && password) {
+        const hashedPassword = sha256(password);
+        if (hashedPassword !== encryptionKey) {
+          logger('Password is different');
+          openModal(path);
+          return false;
+        }
 
-    logger(`decrypt mnemonic: ${mnemonic}`);
+        logger(`password: ${password}, hash: ${hashedPassword}`);
+      }
 
-    const wallet = ethers.Wallet.fromMnemonic(mnemonic, path);
+      const encryptedMnemonicDataStrObj = await getSecretValue('mnemonic');
 
-    logger('** END EXPORT PRIVATE_KEY **');
-    return wallet.privateKey;
-  }, []);
+      if (!encryptedMnemonicDataStrObj) {
+        logger('mnemonic does not exsits');
+        return false;
+      }
+
+      const {salt, iv, cipher} = JSON.parse(
+        encryptedMnemonicDataStrObj.password,
+      ) as {
+        salt: string;
+        iv: string;
+        cipher: string;
+      };
+      logger(`keychain mnemonic data: ${encryptedMnemonicDataStrObj.password}`);
+
+      const mnemonic = encryptor.decrypt(encryptionKey, {salt, iv, cipher});
+
+      if (!mnemonic) {
+        logger('decrypt failed');
+        return false;
+      }
+
+      logger(`decrypt mnemonic: ${mnemonic}`);
+
+      const wallet = ethers.Wallet.fromMnemonic(mnemonic, path);
+      logger(`EXPORT PRIVATE KEY: ${wallet.privateKey}`);
+
+      Alert.alert(
+        'Alert',
+        `privatekey should never be shared with others! \n private key: \n${wallet.privateKey}`,
+      );
+
+      logger('** END EXPORT PRIVATE_KEY **');
+      return wallet.privateKey;
+    },
+    [closeModal, modalVisible, openModal],
+  );
 
   return {
-    exportPrivateKey,
+    revealPrivatekey,
   };
 };

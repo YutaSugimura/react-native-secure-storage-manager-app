@@ -7,14 +7,19 @@ import {
   View,
 } from 'react-native';
 import {useWalletState, WalletProvider} from './context/wallet';
+import {ModalProvider} from './context/modal';
 import {useCreateWallet} from './hooks/useCreateWallet';
 import {AccountList} from './components/accountList';
+import {PasswordModal} from './components/modal';
 
 export const WalletScreen: React.FC = () => {
   return (
     <WalletProvider>
       <View style={styles.container}>
-        <Main />
+        <ModalProvider
+          modalComponent={<PasswordModal title="Confirm Password" />}>
+          <Main />
+        </ModalProvider>
       </View>
     </WalletProvider>
   );

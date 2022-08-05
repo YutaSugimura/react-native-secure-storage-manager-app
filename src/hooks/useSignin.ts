@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {useAuthDispatch} from '../context/login';
+import {useAuthDispatch} from '../context/auth';
 import {getGenericPassword} from '../storage/keychain';
 import {storage} from '../storage/storage';
 import {sha256} from '../handlers/hash';
