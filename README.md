@@ -2,6 +2,12 @@
 
 Sample application to securely manage wallet mnemonic and private keys.
 
+## ToDo
+
+- [x] Support Biometry
+- [ ] Change Password
+- [ ] Authentication without login required
+
 ## Use
 
 - [react-native-keychain](https://github.com/oblador/react-native-keychain)
