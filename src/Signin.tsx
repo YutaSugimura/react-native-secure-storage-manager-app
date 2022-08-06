@@ -27,7 +27,12 @@ export const SigninScreen: React.FC = () => {
           </Text>
         </View>
 
-        <PasswordForm value={value} onChangeText={onChangeText} focus />
+        <PasswordForm
+          value={value}
+          onChangeText={onChangeText}
+          onSubmitEditing={onSubmit}
+          focus
+        />
 
         {enabledBiometry && (
           <TouchableOpacity

@@ -4,10 +4,16 @@ import {StyleSheet, TextInput, useColorScheme} from 'react-native';
 type Props = {
   value?: string;
   onChangeText: (newText: string) => void;
+  onSubmitEditing?: () => void;
   focus?: boolean;
 };
 
-export const PasswordForm: React.FC<Props> = ({value, onChangeText, focus}) => {
+export const PasswordForm: React.FC<Props> = ({
+  value,
+  onChangeText,
+  onSubmitEditing,
+  focus,
+}) => {
   const isDarkTheme = useColorScheme() === 'dark';
   const ref = useRef<TextInput>(null);
 
@@ -32,7 +38,9 @@ export const PasswordForm: React.FC<Props> = ({value, onChangeText, focus}) => {
       autoCorrect={false}
       autoCapitalize="none"
       autoComplete="password"
+      returnKeyType="done"
       secureTextEntry={true}
+      onSubmitEditing={onSubmitEditing}
     />
   );
 };
