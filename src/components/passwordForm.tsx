@@ -1,16 +1,25 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {StyleSheet, TextInput, useColorScheme} from 'react-native';
 
 type Props = {
   value?: string;
   onChangeText: (newText: string) => void;
+  focus?: boolean;
 };
 
-export const PasswordForm: React.FC<Props> = ({value, onChangeText}) => {
+export const PasswordForm: React.FC<Props> = ({value, onChangeText, focus}) => {
   const isDarkTheme = useColorScheme() === 'dark';
+  const ref = useRef<TextInput>(null);
+
+  useEffect(() => {
+    if (focus) {
+      ref.current?.focus();
+    }
+  }, [focus]);
 
   return (
     <TextInput
+      ref={ref}
       value={value}
       onChangeText={onChangeText}
       placeholder="password"

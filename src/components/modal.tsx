@@ -80,7 +80,11 @@ export const PasswordModal: React.FC<Props> = ({title}) => {
 
             <View style={styles.box}>
               <View style={styles.formContainer}>
-                <PasswordForm value={value} onChangeText={setValue} />
+                <PasswordForm
+                  value={value}
+                  onChangeText={setValue}
+                  focus={modalState.modalVisible}
+                />
               </View>
 
               <TouchableOpacity style={styles.button} onPress={onSubmit}>

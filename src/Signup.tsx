@@ -25,7 +25,7 @@ export const SignupScreen: React.FC = () => {
           </Text>
         </View>
 
-        <PasswordForm value={value} onChangeText={onChangeText} />
+        <PasswordForm value={value} onChangeText={onChangeText} focus />
 
         <View style={styles.biometryContainer}>
           <Text
