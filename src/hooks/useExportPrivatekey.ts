@@ -30,7 +30,7 @@ export const useExportPrivateKey = () => {
         return false;
       }
 
-      const enabledBiometry = storage.getBoolean('biometry');
+      const enabledBiometry = storage.getBoolean('biometrics');
       logger(`biometry: ${enabledBiometry}`);
 
       const encryptionKey = credentials.password;

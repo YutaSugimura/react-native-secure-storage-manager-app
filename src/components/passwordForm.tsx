@@ -1,16 +1,19 @@
 import React, {useEffect, useRef} from 'react';
-import {StyleSheet, TextInput, useColorScheme} from 'react-native';
+import {
+  StyleSheet,
+  TextInput,
+  type TextInputProps,
+  useColorScheme,
+} from 'react-native';
 
-type Props = {
-  value?: string;
-  onChangeText: (newText: string) => void;
-  onSubmitEditing?: () => void;
+type Props = TextInputProps & {
   focus?: boolean;
 };
 
 export const PasswordForm: React.FC<Props> = ({
   value,
   onChangeText,
+  onBlur,
   onSubmitEditing,
   focus,
 }) => {
@@ -28,6 +31,7 @@ export const PasswordForm: React.FC<Props> = ({
       ref={ref}
       value={value}
       onChangeText={onChangeText}
+      onBlur={onBlur}
       placeholder="password"
       placeholderTextColor={isDarkTheme ? '#aaa' : '#ddd'}
       style={[
