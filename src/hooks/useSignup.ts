@@ -1,32 +1,37 @@
-import {useState} from 'react';
+import {useRef} from 'react';
+import {useForm} from 'react-hook-form';
 import {useAuthDispatch} from '../context/auth';
 import {setGenericPassword} from '../storage/keychain';
 import {storage} from '../storage/storage';
 import {logger} from '../handlers/logger';
 import {sha256} from '../handlers/hash';
 
-export const useSignup = () => {
-  const [inputValue, setInputValue] = useState<string>();
-  const [isBiometry, setIsBiometry] = useState<boolean>(false);
+type FormData = {
+  password: string;
+  biometrics: boolean;
+};
 
+const defaultValues = {
+  password: '',
+  biometrics: false,
+};
+
+export const useSignup = () => {
+  const {control, handleSubmit, watch} = useForm<FormData>({
+    defaultValues,
+  });
   const {signup} = useAuthDispatch();
 
-  const biometrySwitchToggle = () => {
-    setIsBiometry(prev => !prev);
-  };
+  const biometricsValue = useRef({});
+  biometricsValue.current = watch('biometrics');
 
-  const onSubmit = async () => {
+  const onSubmit = handleSubmit(async ({password, biometrics}) => {
     logger('Signup');
-    if (!inputValue) {
-      logger('password does not exist');
-      return false;
-    }
 
-    const password = inputValue;
     const hashedPassword = sha256(password);
     logger(`password: ${password}, hash: ${hashedPassword}`);
 
-    const result = await setGenericPassword(hashedPassword, isBiometry);
+    const result = await setGenericPassword(hashedPassword, biometrics);
 
     if (!result) {
       logger('Failed to execute setGenericPassword');
@@ -34,18 +39,16 @@ export const useSignup = () => {
     }
     logger(`Result setGenericPassword: ${result}`);
 
-    storage.set('biometry', isBiometry !== undefined ? isBiometry : false);
-    logger(`Save biometry status. biometry is ${isBiometry}`);
+    storage.set('biometrics', biometrics);
+    logger(`Save biometrics status. biometry is ${biometrics}`);
 
     signup(hashedPassword);
     return true;
-  };
+  });
 
   return {
-    value: inputValue,
-    onChangeText: setInputValue,
-    isBiometry,
-    biometrySwitchToggle,
+    control,
+    biometricsValue,
     onSubmit,
   };
 };

@@ -8,13 +8,13 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import {Controller} from 'react-hook-form';
 import {useSignup} from './hooks/useSignup';
 import {PasswordForm} from './components/passwordForm';
 
 export const SignupScreen: React.FC = () => {
   const isDarkTheme = useColorScheme() === 'dark';
-  const {value, onChangeText, isBiometry, biometrySwitchToggle, onSubmit} =
-    useSignup();
+  const {control, onSubmit} = useSignup();
 
   return (
     <View style={styles.container}>
@@ -25,11 +25,21 @@ export const SignupScreen: React.FC = () => {
           </Text>
         </View>
 
-        <PasswordForm
-          value={value}
-          onChangeText={onChangeText}
-          onSubmitEditing={onSubmit}
-          focus
+        <Controller
+          name="password"
+          control={control}
+          rules={{required: true}}
+          render={({field: {onChange, onBlur, value}, formState: {}}) => (
+            <>
+              <PasswordForm
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                onSubmitEditing={onSubmit}
+                focus
+              />
+            </>
+          )}
         />
 
         <View style={styles.biometryContainer}>
@@ -41,10 +51,16 @@ export const SignupScreen: React.FC = () => {
             Unlock with Face ID?
           </Text>
 
-          <Switch
-            value={isBiometry}
-            onValueChange={biometrySwitchToggle}
-            trackColor={{true: '#2187FF', false: '#666'}}
+          <Controller
+            control={control}
+            name="biometrics"
+            render={({field: {value, onChange}}) => (
+              <Switch
+                value={value}
+                onValueChange={onChange}
+                trackColor={{true: '#2187FF', false: '#666'}}
+              />
+            )}
           />
         </View>
       </View>

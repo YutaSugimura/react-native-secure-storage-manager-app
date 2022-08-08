@@ -8,14 +8,14 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import {Controller} from 'react-hook-form';
 import {useReset} from './hooks/useReset';
 import {useSignin} from './hooks/useSignin';
 import {PasswordForm} from './components/passwordForm';
 
 export const SigninScreen: React.FC = () => {
   const isDarkTheme = useColorScheme() === 'dark';
-  const {value, onChangeText, onSubmit, signinWithBiometry, enabledBiometry} =
-    useSignin();
+  const {control, onSubmit, signinWithBiometry, enabledBiometry} = useSignin();
   const {onReset} = useReset();
 
   return (
@@ -27,11 +27,19 @@ export const SigninScreen: React.FC = () => {
           </Text>
         </View>
 
-        <PasswordForm
-          value={value}
-          onChangeText={onChangeText}
-          onSubmitEditing={onSubmit}
-          focus
+        <Controller
+          name="password"
+          control={control}
+          rules={{required: true}}
+          render={({field: {onChange, onBlur, value}, formState: {}}) => (
+            <PasswordForm
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              onSubmitEditing={onSubmit}
+              focus
+            />
+          )}
         />
 
         {enabledBiometry && (
