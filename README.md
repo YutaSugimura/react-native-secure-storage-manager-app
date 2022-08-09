@@ -57,6 +57,7 @@ yarn start
 ## issues
 
 - [iOS 15 setInternetCredentials throwing "The user name or passphrase you entered is not correct" error](https://github.com/oblador/react-native-keychain/issues/509)
+- [Different from OpenSSL-universal versin used by flipper](https://github.com/margelo/react-native-quick-crypto/issues/77#issuecomment-1201192055)
 
 ## LICENSE
 
