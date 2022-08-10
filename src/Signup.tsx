@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Dimensions,
+  SafeAreaView,
   StyleSheet,
   Switch,
   Text,
@@ -8,6 +9,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {Controller} from 'react-hook-form';
 import {useSignup} from './hooks/useSignup';
 import {PasswordForm} from './components/passwordForm';
@@ -17,79 +19,90 @@ export const SignupScreen: React.FC = () => {
   const {control, onSubmit} = useSignup();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.contentContainer}>
-        <View style={styles.titleContainer}>
-          <Text style={[styles.title, isDarkTheme && styles.title_dark]}>
-            Sign in
-          </Text>
-        </View>
-
-        <Controller
-          name="password"
-          control={control}
-          rules={{required: true}}
-          render={({field: {onChange, onBlur, value}, formState: {}}) => (
-            <>
-              <PasswordForm
-                value={value}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                onSubmitEditing={onSubmit}
-                focus
-              />
-            </>
-          )}
-        />
-
-        <View style={styles.biometryContainer}>
-          <Text
-            style={[
-              styles.biometryLabel,
-              isDarkTheme && styles.biometryLabel_dark,
-            ]}>
-            Unlock with Face ID?
-          </Text>
+    <SafeAreaView
+      style={[
+        styles.safeContainer,
+        isDarkTheme ? Colors.darker : Colors.lighter,
+      ]}>
+      <View style={styles.container}>
+        <View style={styles.contentContainer}>
+          <View style={styles.titleContainer}>
+            <Text style={[styles.title, isDarkTheme && styles.title_dark]}>
+              Sign in
+            </Text>
+          </View>
 
           <Controller
+            name="password"
             control={control}
-            name="biometrics"
-            render={({field: {value, onChange}}) => (
-              <Switch
-                value={value}
-                onValueChange={onChange}
-                trackColor={{true: '#2187FF', false: '#666'}}
-              />
+            rules={{required: true}}
+            render={({field: {onChange, onBlur, value}, formState: {}}) => (
+              <>
+                <PasswordForm
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  onSubmitEditing={onSubmit}
+                  focus
+                />
+              </>
             )}
           />
+
+          <View style={styles.biometryContainer}>
+            <Text
+              style={[
+                styles.biometryLabel,
+                isDarkTheme && styles.biometryLabel_dark,
+              ]}>
+              Unlock with Face ID?
+            </Text>
+
+            <Controller
+              control={control}
+              name="biometrics"
+              render={({field: {value, onChange}}) => (
+                <Switch
+                  value={value}
+                  onValueChange={onChange}
+                  trackColor={{true: '#2187FF', false: '#666'}}
+                />
+              )}
+            />
+          </View>
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={onSubmit}
+            style={[
+              styles.signupButton,
+              isDarkTheme
+                ? styles.signupButton_dark
+                : styles.signupButton_light,
+            ]}>
+            <Text
+              style={[
+                styles.signupButtonLabel,
+                isDarkTheme
+                  ? styles.signupButtonLabelColor_dark
+                  : styles.signupButtonLabelColor_light,
+              ]}>
+              Sign up
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={onSubmit}
-          style={[
-            styles.signupButton,
-            isDarkTheme ? styles.signupButton_dark : styles.signupButton_light,
-          ]}>
-          <Text
-            style={[
-              styles.signupButtonLabel,
-              isDarkTheme
-                ? styles.signupButtonLabelColor_dark
-                : styles.signupButtonLabelColor_light,
-            ]}>
-            Sign up
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const DEVICE_WIDTH = Dimensions.get('screen').width;
 
 const styles = StyleSheet.create({
+  safeContainer: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     width: DEVICE_WIDTH,

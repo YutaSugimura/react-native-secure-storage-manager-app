@@ -9,66 +9,19 @@
  */
 
 import React from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {AuthProvider, useAuthState} from './context/auth';
-import {SigninScreen} from './Signin';
-import {SignupScreen} from './Signup';
-import {WalletScreen} from './Wallet';
+import {StatusBar, useColorScheme} from 'react-native';
+import {AuthProvider} from './context/auth';
+import Navigator from './navigations';
 
 const App: React.FC = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
     <AuthProvider>
-      <SafeAreaView
-        style={[styles.container, isDarkMode ? Colors.darker : Colors.lighter]}>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-
-        <Main />
-      </SafeAreaView>
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <Navigator />
     </AuthProvider>
   );
 };
-
-const Main: React.FC = () => {
-  const state = useAuthState();
-
-  if (state.isLoading) {
-    return <Text>Loading...</Text>;
-  }
-
-  if (!state.isAccount) {
-    return <SignupScreen />;
-  }
-
-  if (state.isAccount && !state.isLogin) {
-    return <SigninScreen />;
-  }
-
-  return (
-    <View style={styles.box}>
-      <WalletScreen />
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  box: {
-    flex: 1,
-  },
-});
 
 export default App;
