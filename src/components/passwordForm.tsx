@@ -9,6 +9,7 @@ import {
   Text,
   Dimensions,
   View,
+  Platform,
 } from 'react-native';
 
 const inputAccessoryViewID = 'simple';
@@ -60,25 +61,27 @@ export const PasswordForm: React.FC<Props> = ({
         onSubmitEditing={onSubmitEditing}
       />
 
-      <InputAccessoryView nativeID={inputAccessoryViewID}>
-        <View
-          style={[
-            styles.accessoryContainer,
-            isDarkTheme && styles.accessoryContainer_dark,
-          ]}>
-          <TouchableOpacity
-            onPress={onCloseKeyboard}
-            style={styles.accessoryButton}>
-            <Text
-              style={[
-                styles.accessoryButtonLabel,
-                isDarkTheme && styles.accessoryButtonLabel_dark,
-              ]}>
-              Close
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </InputAccessoryView>
+      {Platform.OS === 'ios' && (
+        <InputAccessoryView nativeID={inputAccessoryViewID}>
+          <View
+            style={[
+              styles.accessoryContainer,
+              isDarkTheme && styles.accessoryContainer_dark,
+            ]}>
+            <TouchableOpacity
+              onPress={onCloseKeyboard}
+              style={styles.accessoryButton}>
+              <Text
+                style={[
+                  styles.accessoryButtonLabel,
+                  isDarkTheme && styles.accessoryButtonLabel_dark,
+                ]}>
+                Close
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </InputAccessoryView>
+      )}
     </>
   );
 };
