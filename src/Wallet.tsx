@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {useWalletState, WalletProvider} from './context/wallet';
+import {useWalletState} from './context/wallet';
 import {ModalProvider} from './context/modal';
 import {useCreateWallet} from './hooks/useCreateWallet';
 import {AccountList} from './components/accountList';
@@ -19,20 +19,18 @@ export const WalletScreen: React.FC = () => {
   const isDarkTheme = useColorScheme() === 'dark';
 
   return (
-    <WalletProvider>
-      <SafeAreaView
-        style={[
-          styles.safeContainer,
-          isDarkTheme ? Colors.darker : Colors.lighter,
-        ]}>
-        <View style={styles.container}>
-          <ModalProvider
-            modalComponent={<PasswordModal title="Confirm Password" />}>
-            <Main />
-          </ModalProvider>
-        </View>
-      </SafeAreaView>
-    </WalletProvider>
+    <SafeAreaView
+      style={[
+        styles.safeContainer,
+        isDarkTheme ? Colors.darker : Colors.lighter,
+      ]}>
+      <View style={styles.container}>
+        <ModalProvider
+          modalComponent={<PasswordModal title="Confirm Password" />}>
+          <Main />
+        </ModalProvider>
+      </View>
+    </SafeAreaView>
   );
 };
 
