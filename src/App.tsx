@@ -19,6 +19,7 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+
       <Navigator />
     </AuthProvider>
   );

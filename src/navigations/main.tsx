@@ -1,37 +1,25 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {LoadingScreen} from '../Loading';
-import {SignupScreen} from '../Signup';
-import {SigninScreen} from '../Signin';
+import {useAppState} from '../hooks/useAppState';
 import {WalletScreen} from '../Wallet';
-import {useAuthState} from '../context/auth';
+import {BackgroundScreen} from '../Background';
 
-type StackParams = {
-  Loading: undefined;
-  Signup: undefined;
-  Signin: undefined;
+type MainStackParams = {
   Wallet: undefined;
+  Background: undefined;
 };
 
-const Stack = createNativeStackNavigator<StackParams>();
+const Stack = createNativeStackNavigator<MainStackParams>();
 
 const Navigator: React.FC = () => {
-  const state = useAuthState();
+  const appStateVisible = useAppState();
 
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      {state.isLoading ? (
-        <Stack.Screen name="Loading" component={LoadingScreen} />
-      ) : !state.isLogin ? (
-        <>
-          {state.isAccount ? (
-            <Stack.Screen name="Signin" component={SigninScreen} />
-          ) : (
-            <Stack.Screen name="Signup" component={SignupScreen} />
-          )}
-        </>
-      ) : (
+    <Stack.Navigator screenOptions={{headerShown: false, animation: 'fade'}}>
+      {appStateVisible === 'active' ? (
         <Stack.Screen name="Wallet" component={WalletScreen} />
+      ) : (
+        <Stack.Screen name="Background" component={BackgroundScreen} />
       )}
     </Stack.Navigator>
   );

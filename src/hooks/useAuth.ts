@@ -87,8 +87,9 @@ export const reducer: Reducer<AuthState, Action> = (_, action) => {
 export const useAuth = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const startup = useCallback(() => {
+  const loadStorage = useCallback(() => {
     const isAccount = storage.getBoolean('isAccount');
+
     dispatch({
       type: 'STOP_LOADING',
       payload: {isAccount: isAccount !== undefined ? isAccount : false},
@@ -114,7 +115,7 @@ export const useAuth = () => {
 
   return {
     state,
-    startup,
+    loadStorage,
     signup,
     signin,
     signout,

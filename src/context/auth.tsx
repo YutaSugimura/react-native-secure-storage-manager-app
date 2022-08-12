@@ -1,21 +1,17 @@
-import React, {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, {createContext, PropsWithChildren, useContext} from 'react';
 import {useAuth, type AuthState} from '../hooks/useAuth';
 
 const AuthStateContext = createContext<AuthState>({isLoading: true});
 
 // eslint-disable-next-line no-spaced-func
 const AuthDispatchContext = createContext<{
+  loadStorage: () => void;
   signup: (encryptionKey: string) => void;
   signin: (encryptionKey: string) => void;
   signout: () => void;
   clearAuth: () => void;
 }>({
+  loadStorage: () => {},
   signup: (_: string) => {},
   signin: (_: string) => {},
   signout: () => {},
@@ -27,26 +23,12 @@ type Props = {};
 export const AuthProvider: React.FC<PropsWithChildren<Props>> = ({
   children,
 }) => {
-  const {state, startup, signup, signin, signout, clearAuth} = useAuth();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    let cleanup = false;
-
-    if (isLoading && !cleanup) {
-      setIsLoading(true);
-      startup();
-    }
-
-    return () => {
-      cleanup = true;
-    };
-  }, [isLoading, startup]);
+  const {state, loadStorage, signup, signin, signout, clearAuth} = useAuth();
 
   return (
     <AuthStateContext.Provider value={state}>
       <AuthDispatchContext.Provider
-        value={{signup, signin, signout, clearAuth}}>
+        value={{loadStorage, signup, signin, signout, clearAuth}}>
         {children}
       </AuthDispatchContext.Provider>
     </AuthStateContext.Provider>

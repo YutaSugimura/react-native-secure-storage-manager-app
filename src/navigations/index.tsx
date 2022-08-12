@@ -1,11 +1,26 @@
-import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import MainNavigator from './main';
+import React, {useCallback} from 'react';
+import {useColorScheme} from 'react-native';
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from '@react-navigation/native';
+import {useAuthDispatch} from '../context/auth';
+import AppNavigator from './app';
 
 const Navigator: React.FC = () => {
+  const isDarkTheme = useColorScheme() === 'dark';
+  const {loadStorage} = useAuthDispatch();
+
+  const onReady = useCallback(() => {
+    loadStorage();
+  }, [loadStorage]);
+
   return (
-    <NavigationContainer onReady={() => console.log('start')}>
-      <MainNavigator />
+    <NavigationContainer
+      onReady={onReady}
+      theme={isDarkTheme ? DarkTheme : DefaultTheme}>
+      <AppNavigator />
     </NavigationContainer>
   );
 };
