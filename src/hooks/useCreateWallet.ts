@@ -2,6 +2,7 @@ import {ethers} from 'ethers';
 import {useAuthState} from '../context/auth';
 import {useWalletDispatch, useWalletState} from '../context/wallet';
 import Encryptor from '../handlers/encryptor';
+import {hapticFeedback} from '../handlers/hapticFeedback';
 import {logger} from '../handlers/logger';
 import {getSecretValue, setSecretValue} from '../storage/keychain';
 import {storage} from '../storage/storage';
@@ -21,6 +22,7 @@ export const useCreateWallet = () => {
 
   const createWallet = async () => {
     logger('CREATE WALLET');
+    hapticFeedback('impactLight');
 
     if (isWallet) {
       logger('wallet already exists');
@@ -147,6 +149,7 @@ export const useCreateWallet = () => {
 
   const createAccount = async () => {
     logger('CREATE ACCOUNT');
+    hapticFeedback('impactLight');
 
     if (state.isLoading || !state.isLogin || !accountList) {
       return false;

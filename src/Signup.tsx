@@ -147,7 +147,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.24,
     shadowRadius: 3.6,
-
     elevation: 5,
   },
   signupButton_dark: {

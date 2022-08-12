@@ -3,8 +3,9 @@ import {useForm} from 'react-hook-form';
 import {useAuthDispatch} from '../context/auth';
 import {setGenericPassword} from '../storage/keychain';
 import {storage} from '../storage/storage';
-import {logger} from '../handlers/logger';
 import {sha256} from '../handlers/hash';
+import {hapticFeedback} from '../handlers/hapticFeedback';
+import {logger} from '../handlers/logger';
 
 type FormData = {
   password: string;
@@ -27,6 +28,7 @@ export const useSignup = () => {
 
   const onSubmit = handleSubmit(async ({password, biometrics}) => {
     logger('Signup');
+    hapticFeedback('impactLight');
 
     const hashedPassword = sha256(password);
     logger(`password: ${password}, hash: ${hashedPassword}`);

@@ -1,12 +1,13 @@
 import {useCallback} from 'react';
+import {Alert} from 'react-native';
 import {ethers} from 'ethers';
 import {useModalDispatch, useModalState} from '../context/modal';
 import {getGenericPassword, getSecretValue} from '../storage/keychain';
 import {storage} from '../storage/storage';
 import Encryptor from '../handlers/encryptor';
 import {sha256} from '../handlers/hash';
+import {hapticFeedback} from '../handlers/hapticFeedback';
 import {logger} from '../handlers/logger';
-import {Alert} from 'react-native';
 
 const encryptor = new Encryptor();
 
@@ -17,6 +18,7 @@ export const useExportPrivateKey = () => {
   const revealPrivatekey = useCallback(
     async (path: string, password?: string) => {
       logger('** START EXPORT PRIVATE_KEY **');
+      hapticFeedback('impactLight');
 
       if (modalVisible) {
         logger('Close Password Modal');

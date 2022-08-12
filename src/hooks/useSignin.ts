@@ -4,6 +4,7 @@ import {useAuthDispatch} from '../context/auth';
 import {getGenericPassword} from '../storage/keychain';
 import {storage} from '../storage/storage';
 import {sha256} from '../handlers/hash';
+import {hapticFeedback} from '../handlers/hapticFeedback';
 import {logger} from '../handlers/logger';
 
 type FormData = {
@@ -25,6 +26,7 @@ export const useSignin = () => {
 
   const onSubmit = handleSubmit(async ({password}) => {
     logger('Signin');
+    hapticFeedback('impactLight');
 
     const hashedPassword = sha256(password);
     logger(`password: ${password}, hash: ${hashedPassword}`);
@@ -43,6 +45,7 @@ export const useSignin = () => {
 
   const signinWithBiometry = async () => {
     logger('Signin with biometry');
+    hapticFeedback('impactLight');
 
     const credentials = await getGenericPassword();
     if (credentials) {
