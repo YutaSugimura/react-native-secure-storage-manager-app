@@ -5,13 +5,13 @@ import {
   StyleSheet,
   Switch,
   Text,
-  TouchableOpacity,
   useColorScheme,
   View,
 } from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {Controller} from 'react-hook-form';
 import {useSignup} from './hooks/useSignup';
+import {RoundedButton} from './components/roundedButton';
 import {PasswordForm} from './components/passwordForm';
 
 export const SignupScreen: React.FC = () => {
@@ -73,24 +73,7 @@ export const SignupScreen: React.FC = () => {
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={onSubmit}
-            style={[
-              styles.signupButton,
-              isDarkTheme
-                ? styles.signupButton_dark
-                : styles.signupButton_light,
-            ]}>
-            <Text
-              style={[
-                styles.signupButtonLabel,
-                isDarkTheme
-                  ? styles.signupButtonLabelColor_dark
-                  : styles.signupButtonLabelColor_light,
-              ]}>
-              Sign up
-            </Text>
-          </TouchableOpacity>
+          <RoundedButton onPress={onSubmit} title="Sign up" />
         </View>
       </View>
     </SafeAreaView>
@@ -130,37 +113,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 60,
     width: '100%',
-  },
-  signupButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: DEVICE_WIDTH * 0.78,
-    height: 42,
-    borderRadius: 21,
-  },
-  signupButton_light: {
-    backgroundColor: '#fff',
-    shadowColor: '#2187FF',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.24,
-    shadowRadius: 3.6,
-    elevation: 5,
-  },
-  signupButton_dark: {
-    backgroundColor: '#2187FF',
-  },
-  signupButtonLabel: {
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  signupButtonLabelColor_light: {
-    color: '#2187FF',
-  },
-  signupButtonLabelColor_dark: {
-    color: '#fff',
   },
   title: {
     fontSize: 24,

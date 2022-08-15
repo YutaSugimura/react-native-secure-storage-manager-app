@@ -13,6 +13,7 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {Controller} from 'react-hook-form';
 import {useReset} from './hooks/useReset';
 import {useSignin} from './hooks/useSignin';
+import {RoundedButton} from './components/roundedButton';
 import {PasswordForm} from './components/passwordForm';
 
 export const SigninScreen: React.FC = () => {
@@ -66,24 +67,7 @@ export const SigninScreen: React.FC = () => {
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={onSubmit}
-            style={[
-              styles.signinButton,
-              isDarkTheme
-                ? styles.signinButton_dark
-                : styles.signinButton_light,
-            ]}>
-            <Text
-              style={[
-                styles.signinButtonLabel,
-                isDarkTheme
-                  ? styles.signinButtonLabelColor_dark
-                  : styles.signinButtonLabelColor_light,
-              ]}>
-              Sign in
-            </Text>
-          </TouchableOpacity>
+          <RoundedButton onPress={onSubmit} title="Sign in" />
 
           <TouchableOpacity onPress={onReset} style={styles.resetButton}>
             <Text style={styles.resetButtonLabel}>Reset</Text>
@@ -127,37 +111,6 @@ const styles = StyleSheet.create({
   biometryImage: {
     height: 64,
     width: 64,
-  },
-  signinButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: DEVICE_WIDTH * 0.78,
-    height: 42,
-    borderRadius: 21,
-  },
-  signinButton_light: {
-    backgroundColor: '#fff',
-    shadowColor: '#2187FF',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.24,
-    shadowRadius: 3.6,
-    elevation: 5,
-  },
-  signinButton_dark: {
-    backgroundColor: '#2187FF',
-  },
-  signinButtonLabel: {
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  signinButtonLabelColor_light: {
-    color: '#2187FF',
-  },
-  signinButtonLabelColor_dark: {
-    color: '#fff',
   },
   resetButton: {
     marginTop: 20,
