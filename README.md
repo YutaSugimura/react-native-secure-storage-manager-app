@@ -5,7 +5,7 @@ Sample application to securely manage wallet mnemonic and private keys.
 ## ToDo
 
 - [x] Support Biometry
-- [ ] Change Password
+- [x] Change Password
 - [ ] Authentication without login required
 
 ## Use

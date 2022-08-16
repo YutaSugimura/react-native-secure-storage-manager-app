@@ -40,6 +40,12 @@ type Action =
       type: 'SIGNOUT';
     }
   | {
+      type: 'UPDATE_ENCRYPTIONKEY';
+      payload: {
+        encryptionKey: string;
+      };
+    }
+  | {
       type: 'CLEAR_AUTH';
     };
 
@@ -47,7 +53,7 @@ const initialState: AuthState = {
   isLoading: true,
 };
 
-export const reducer: Reducer<AuthState, Action> = (_, action) => {
+export const reducer: Reducer<AuthState, Action> = (state, action) => {
   switch (action.type) {
     case 'STOP_LOADING':
       return {
@@ -74,6 +80,11 @@ export const reducer: Reducer<AuthState, Action> = (_, action) => {
         isLoading: false,
         isAccount: true,
         isLogin: false,
+      };
+    case 'UPDATE_ENCRYPTIONKEY':
+      return {
+        ...state,
+        encryptionKey: action.payload.encryptionKey,
       };
     case 'CLEAR_AUTH':
       return {
@@ -109,6 +120,13 @@ export const useAuth = () => {
     dispatch({type: 'SIGNOUT'});
   }, []);
 
+  const updateEncryptionKey = useCallback((newEncryptedKey: string) => {
+    dispatch({
+      type: 'UPDATE_ENCRYPTIONKEY',
+      payload: {encryptionKey: newEncryptedKey},
+    });
+  }, []);
+
   const clearAuth = useCallback(() => {
     dispatch({type: 'CLEAR_AUTH'});
   }, []);
@@ -119,6 +137,7 @@ export const useAuth = () => {
     signup,
     signin,
     signout,
+    updateEncryptionKey,
     clearAuth,
   };
 };

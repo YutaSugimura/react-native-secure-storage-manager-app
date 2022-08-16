@@ -9,12 +9,14 @@ const AuthDispatchContext = createContext<{
   signup: (encryptionKey: string) => void;
   signin: (encryptionKey: string) => void;
   signout: () => void;
+  updateEncryptionKey: (newEncryptionKey: string) => void;
   clearAuth: () => void;
 }>({
   loadStorage: () => {},
   signup: (_: string) => {},
   signin: (_: string) => {},
   signout: () => {},
+  updateEncryptionKey: () => {},
   clearAuth: () => {},
 });
 
@@ -23,12 +25,27 @@ type Props = {};
 export const AuthProvider: React.FC<PropsWithChildren<Props>> = ({
   children,
 }) => {
-  const {state, loadStorage, signup, signin, signout, clearAuth} = useAuth();
+  const {
+    state,
+    loadStorage,
+    signup,
+    signin,
+    signout,
+    updateEncryptionKey,
+    clearAuth,
+  } = useAuth();
 
   return (
     <AuthStateContext.Provider value={state}>
       <AuthDispatchContext.Provider
-        value={{loadStorage, signup, signin, signout, clearAuth}}>
+        value={{
+          loadStorage,
+          signup,
+          signin,
+          signout,
+          updateEncryptionKey,
+          clearAuth,
+        }}>
         {children}
       </AuthDispatchContext.Provider>
     </AuthStateContext.Provider>

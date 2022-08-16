@@ -8,10 +8,13 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import type {MainStackNavigationProps} from '../navigations/main';
 import {useWalletState} from '../context/wallet';
 import {type Account} from '../hooks/useWallet';
 import {useCreateWallet} from '../hooks/useCreateWallet';
 import {useExportPrivateKey} from '../hooks/useExportPrivatekey';
+import {hapticFeedback} from '../handlers/hapticFeedback';
 
 export const AccountList: React.FC = () => {
   const isDarkTheme = useColorScheme() === 'dark';
@@ -84,7 +87,13 @@ const AccountListItem: React.FC<AccountListItemProps> = ({
 
 const ListHeader: React.FC = () => {
   const isDarkTheme = useColorScheme() === 'dark';
+  const {navigate} = useNavigation<MainStackNavigationProps<'Wallet'>>();
   const {createAccount} = useCreateWallet();
+
+  const onNavigate = () => {
+    hapticFeedback('impactMedium');
+    navigate('ChangePassword');
+  };
 
   return (
     <View style={styles.headerContainer}>
@@ -93,6 +102,12 @@ const ListHeader: React.FC = () => {
       </Text>
 
       <View style={styles.headerButtonContainer}>
+        <TouchableOpacity
+          onPress={onNavigate}
+          style={[styles.headerButton, {marginBottom: 10}]}>
+          <Text style={styles.headerButtonLabel}>Settings</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity onPress={createAccount} style={styles.headerButton}>
           <Text style={styles.headerButtonLabel}>Add Account</Text>
         </TouchableOpacity>

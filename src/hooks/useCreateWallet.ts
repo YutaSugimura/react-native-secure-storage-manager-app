@@ -1,4 +1,5 @@
 import {ethers} from 'ethers';
+import {generatePath} from '../handlers/generatePath';
 import {useAuthState} from '../context/auth';
 import {useWalletDispatch, useWalletState} from '../context/wallet';
 import Encryptor from '../handlers/encryptor';
@@ -6,12 +7,6 @@ import {hapticFeedback} from '../handlers/hapticFeedback';
 import {logger} from '../handlers/logger';
 import {getSecretValue, setSecretValue} from '../storage/keychain';
 import {storage} from '../storage/storage';
-
-const BASE_PATH = "m/44'/60'/0'/0/${no}";
-
-const generatePath = (index: number = 0) => {
-  return BASE_PATH.replace('${no}', index.toString());
-};
 
 const encryptor = new Encryptor();
 

@@ -1,16 +1,25 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from '@react-navigation/native-stack';
 import {WalletProvider} from '../context/wallet';
 import {useAppState} from '../hooks/useAppState';
 import {WalletScreen} from '../Wallet';
+import {ChangePassowrdScreen} from '../ChangePassword';
 import {BackgroundScreen} from '../Background';
 
-type MainStackParams = {
+type MainStackParamList = {
   Wallet: undefined;
+  ChangePassword: undefined;
   Background: undefined;
 };
 
-const Stack = createNativeStackNavigator<MainStackParams>();
+export type MainStackScreen = keyof MainStackParamList;
+export type MainStackNavigationProps<T extends MainStackScreen> =
+  NativeStackNavigationProp<MainStackParamList, T>;
+
+const Stack = createNativeStackNavigator<MainStackParamList>();
 
 const Navigator: React.FC = () => {
   const appStateVisible = useAppState();
@@ -19,7 +28,15 @@ const Navigator: React.FC = () => {
     <WalletProvider>
       <Stack.Navigator screenOptions={{headerShown: false, animation: 'fade'}}>
         {appStateVisible === 'active' ? (
-          <Stack.Screen name="Wallet" component={WalletScreen} />
+          <>
+            <Stack.Screen name="Wallet" component={WalletScreen} />
+            <Stack.Group screenOptions={{presentation: 'modal'}}>
+              <Stack.Screen
+                name="ChangePassword"
+                component={ChangePassowrdScreen}
+              />
+            </Stack.Group>
+          </>
         ) : (
           <Stack.Screen name="Background" component={BackgroundScreen} />
         )}
