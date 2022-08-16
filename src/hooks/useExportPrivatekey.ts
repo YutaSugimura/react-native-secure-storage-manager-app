@@ -72,7 +72,7 @@ export const useExportPrivateKey = () => {
 
       const mnemonic = encryptor.decrypt(encryptionKey, {salt, iv, cipher});
 
-      if (!mnemonic) {
+      if (!mnemonic || !ethers.utils.isValidMnemonic(mnemonic)) {
         logger('decrypt failed');
         return false;
       }

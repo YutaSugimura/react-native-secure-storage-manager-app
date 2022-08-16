@@ -63,11 +63,13 @@ export const useChangePassword = () => {
     ) as EncryptedData;
 
     const mnemonic = encryptor.decrypt(hashedPassword, encryptedData);
-    if (!mnemonic) {
+    if (!mnemonic || !ethers.utils.isValidMnemonic(mnemonic)) {
       setError('password', {message: 'password is not different'});
       logger('mnemonic does not exsits');
       return false;
     }
+
+    logger(`decrypt mnemonic: ${mnemonic}`);
 
     const accounts: (Account & {privatekey: string})[] = [];
 
@@ -87,7 +89,7 @@ export const useChangePassword = () => {
       ) as EncryptedData;
 
       const rowData = encryptor.decrypt(hashedPassword, encryptedAccountData);
-      if (!rowData || !rowData.includes('address:')) {
+      if (!rowData || !rowData.includes('"address":"')) {
         count === 0 && setError('password', {message: 'Internal Errors'});
         loop = false;
         break;
@@ -215,6 +217,7 @@ export const useChangePassword = () => {
     );
 
     const response = results[0] && results[1] && results[2];
+    !response && setError('password', {message: 'Internal Errors'});
     response && goBack();
     return response;
   });
