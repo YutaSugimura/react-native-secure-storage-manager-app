@@ -13,6 +13,7 @@ import {Controller} from 'react-hook-form';
 import {useSignup} from './hooks/useSignup';
 import {RoundedButton} from './components/roundedButton';
 import {PasswordForm} from './components/passwordForm';
+import {ErrorText} from './components/ErrorText';
 
 export const SignupScreen: React.FC = () => {
   const isDarkTheme = useColorScheme() === 'dark';
@@ -36,7 +37,10 @@ export const SignupScreen: React.FC = () => {
             name="password"
             control={control}
             rules={{required: true}}
-            render={({field: {onChange, onBlur, value}, formState: {}}) => (
+            render={({
+              field: {onChange, onBlur, value},
+              formState: {errors},
+            }) => (
               <>
                 <PasswordForm
                   value={value}
@@ -45,6 +49,9 @@ export const SignupScreen: React.FC = () => {
                   onSubmitEditing={onSubmit}
                   focus
                 />
+                {errors?.password?.message && (
+                  <ErrorText errorMessage={errors.password.message} />
+                )}
               </>
             )}
           />

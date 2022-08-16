@@ -13,6 +13,7 @@ import {Controller} from 'react-hook-form';
 import {useChangePassword} from './hooks/useChangePassword';
 import {PasswordForm} from './components/passwordForm';
 import {RoundedButton} from './components/roundedButton';
+import {ErrorText} from './components/ErrorText';
 
 export const ChangePassowrdScreen: React.FC = () => {
   const isDarkTheme = useColorScheme() === 'dark';
@@ -49,13 +50,21 @@ export const ChangePassowrdScreen: React.FC = () => {
             name="password"
             control={control}
             rules={{required: true}}
-            render={({field: {onChange, onBlur, value}, formState: {}}) => (
-              <PasswordForm
-                value={value}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                onSubmitEditing={onSubmit}
-              />
+            render={({
+              field: {onChange, onBlur, value},
+              formState: {errors},
+            }) => (
+              <>
+                <PasswordForm
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  onSubmitEditing={onSubmit}
+                />
+                {errors?.password?.message && (
+                  <ErrorText errorMessage={errors.password.message} />
+                )}
+              </>
             )}
           />
         </View>

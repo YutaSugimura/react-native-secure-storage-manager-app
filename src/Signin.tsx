@@ -15,6 +15,7 @@ import {useReset} from './hooks/useReset';
 import {useSignin} from './hooks/useSignin';
 import {RoundedButton} from './components/roundedButton';
 import {PasswordForm} from './components/passwordForm';
+import {ErrorText} from './components/ErrorText';
 
 export const SigninScreen: React.FC = () => {
   const isDarkTheme = useColorScheme() === 'dark';
@@ -39,14 +40,22 @@ export const SigninScreen: React.FC = () => {
             name="password"
             control={control}
             rules={{required: true}}
-            render={({field: {onChange, onBlur, value}, formState: {}}) => (
-              <PasswordForm
-                value={value}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                onSubmitEditing={onSubmit}
-                focus
-              />
+            render={({
+              field: {onChange, onBlur, value},
+              formState: {errors},
+            }) => (
+              <>
+                <PasswordForm
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  onSubmitEditing={onSubmit}
+                  focus
+                />
+                {errors?.password?.message && (
+                  <ErrorText errorMessage={errors.password.message} />
+                )}
+              </>
             )}
           />
 
