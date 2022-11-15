@@ -51,7 +51,7 @@ yarn start
 
 ## Versions
 
-- react-native@0.69.5
+- react-native@0.70.0
 - react-native-keychain@8.1.1
 - react-native-mmkv@2.4.3
 - react-native-quick-crypto@0.4.5
